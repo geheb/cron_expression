@@ -38,16 +38,16 @@ date_time day_of_month_field::increment(const std::string &value, const date_tim
 		nextTime += days(1);
 		return nextTime;
 	}
-	int pos = -1;
+	size_t pos = 0;
 	auto list = create_list(value);
-	for (size_t i = 0; i < list.size() - 1 && pos < 0; i++) {
+	for (size_t i = 0; i < list.size() - 1; i++) {
 		int currentVal = list[i];
 		int nextVal = list[i + 1];
 		if (time.day() >= currentVal && time.day() < nextVal) {
 			pos = i + 1;
+			break;
 		}
 	}
-	pos = std::max(pos, 0);
 	if (time.day() >= list[pos]) {
 		date_time nextTime(time.year(), time.month(), 1);
 		nextTime += days(nextTime.last_day_of_month()); // next month
