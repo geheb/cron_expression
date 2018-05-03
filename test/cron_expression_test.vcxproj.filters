@@ -21,12 +21,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test_date_time.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test_cron_expression.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\cron_expression.cpp">
       <Filter>Source Files\shared</Filter>
     </ClCompile>
@@ -51,7 +45,16 @@
     <ClCompile Include="..\src\month_field.cpp">
       <Filter>Source Files\shared</Filter>
     </ClCompile>
-    <ClCompile Include="test_minute_field.cpp">
+    <ClCompile Include="cron_expression_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="date_time_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hour_field_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="minute_field_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

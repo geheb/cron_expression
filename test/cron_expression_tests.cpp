@@ -7,6 +7,6 @@ using namespace geheb;
 using namespace std;
 using namespace std::chrono;
 
-TEST_CASE("create every minute expression", "[cron_expression]") {
+TEST_CASE("cron_expression with every minute is valid", "[cron_expression]") {
 	REQUIRE_NOTHROW(cron_expression("* * * * *"));
 }

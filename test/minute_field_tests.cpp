@@ -7,22 +7,22 @@ using namespace geheb;
 using namespace std;
 using namespace std::chrono;
 
-TEST_CASE("range start", "[minute_field]") {
+TEST_CASE("minute_field range start is 0", "[minute_field]") {
 	const minute_field minute;
 	REQUIRE(minute.range_start() == 0);
 }
 
-TEST_CASE("range end", "[minute_field]") {
+TEST_CASE("minute_field range end is 0", "[minute_field]") {
 	const minute_field minute;
 	REQUIRE(minute.range_end() == 59);
 }
 
-TEST_CASE("position", "[minute_field]") {
+TEST_CASE("minute_field pos is 0", "[minute_field]") {
 	const minute_field minute;
 	REQUIRE(minute.pos() == cron_field_pos::minute);
 }
 
-TEST_CASE("unique minute", "[minute_field]") {
+TEST_CASE("minute_field with specific minute is valid", "[minute_field]") {
 	const minute_field minute;
 	for (int i = 0; i < 60; i++)
 	{
@@ -31,25 +31,25 @@ TEST_CASE("unique minute", "[minute_field]") {
 	}
 }
 
-TEST_CASE("every minute", "[minute_field]") {
+TEST_CASE("minute_field with every minute is valid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("*");
 	REQUIRE(valid);
 }
 
-TEST_CASE("every minute via step", "[minute_field]") {
+TEST_CASE("minute_field with every minute step is valid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("*/1");
 	REQUIRE(valid);
 }
 
-TEST_CASE("every minute via range", "[minute_field]") {
+TEST_CASE("minute_field with every minute range is valid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("0-59");
 	REQUIRE(valid);
 }
 
-TEST_CASE("every minute via list", "[minute_field]") {
+TEST_CASE("minute_field with every minute list is valid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate(
 		"0,1,2,3,4,5,6,7,8,9,"
@@ -61,133 +61,145 @@ TEST_CASE("every minute via list", "[minute_field]") {
 	REQUIRE(valid);
 }
 
-TEST_CASE("every 5 minutes via step", "[minute_field]") {
+TEST_CASE("minute_field with every 5 minutes is valid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("*/5");
 	REQUIRE(valid);
 }
 
-TEST_CASE("every 5 minutes via range step", "[minute_field]") {
+TEST_CASE("minute_field with every 5 minutes step is valid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("0-59/5");
 	REQUIRE(valid);
 }
 
-TEST_CASE("every 5 minutes from 0", "[minute_field]") {
+TEST_CASE("minute_field with every 5 minutes range is valid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("0/5");
 	REQUIRE(valid);
 }
 
-TEST_CASE("every 5 minutes via list", "[minute_field]") {
+TEST_CASE("minute_field with every 5 minutes list is valid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("0,5,10,15,20,25,30,35,40,45,50,55");
 	REQUIRE(valid);
 }
 
-TEST_CASE("every minute from 0-15 then at 30 and 45 minute", "[minute_field]") {
+TEST_CASE("minute_field with range and step is valid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("0-15,39,45");
 	REQUIRE(valid);
 }
 
-TEST_CASE("every minute from 0-15 then from 30-45 ", "[minute_field]") {
+TEST_CASE("minute_field with multiple ranges is valid ", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("0-15,30-45");
 	REQUIRE(valid);
 }
 
-TEST_CASE("at minute 3, 2, and 1", "[minute_field]") {
+TEST_CASE("minute_field with unordered list is valid", "[minute_field]") {
 	const minute_field minute;
-	bool valid = minute.validate("3,2,1");
+	bool valid = minute.validate("3,2,1,5");
 	REQUIRE(valid);
 }
 
-TEST_CASE("range from 0 to 100", "[minute_field]") {
+TEST_CASE("minute_field with excessive range values is invalid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("0-100");
 	REQUIRE(!valid);
 }
 
-TEST_CASE("at minute 0, 60 and 100", "[minute_field]") {
+TEST_CASE("minute_field with excessive list values is invalid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("0,60,100");
 	REQUIRE(!valid);
 }
 
-TEST_CASE("at minute 60", "[minute_field]") {
+TEST_CASE("minute_field with 60 is invalid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("60");
 	REQUIRE(!valid);
 }
 
-TEST_CASE("non numeric char", "[minute_field]") {
+TEST_CASE("minute_field with non numeric char is invalid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("?");
 	REQUIRE(!valid);
 }
 
-TEST_CASE("missing start range", "[minute_field]") {
+TEST_CASE("minute_field with missing range start is invalid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("-1");
 	REQUIRE(!valid);
 }
 
-TEST_CASE("missing end range", "[minute_field]") {
+TEST_CASE("minute_field with missing range end is invalid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("1-");
 	REQUIRE(!valid);
 }
 
-TEST_CASE("duplicate values via list", "[minute_field]") {
+TEST_CASE("minute_field with duplicate list values is invalid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("1,2,3,1");
 	REQUIRE(!valid);
 }
 
-TEST_CASE("duplicate values via range and list", "[minute_field]") {
+TEST_CASE("minute_field with duplicate range and list values is invalid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("1-15,10");
 	REQUIRE(!valid);
 }
 
-TEST_CASE("every minute and at minute 0", "[minute_field]") {
+TEST_CASE("minute_field with star and value list is invalid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("*,0");
 	REQUIRE(!valid);
 }
 
-TEST_CASE("star range", "[minute_field]") {
+TEST_CASE("minute_field with star range is invalid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("*-*");
 	REQUIRE(!valid);
 }
 
-TEST_CASE("start range with star", "[minute_field]") {
+TEST_CASE("minute_field with star and value range is invalid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("*-59");
 	REQUIRE(!valid);
 }
 
-TEST_CASE("end range with star", "[minute_field]") {
+TEST_CASE("minute_field with value and star range is invalid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("1-*");
 	REQUIRE(!valid);
 }
 
-TEST_CASE("every minute from 30 to 10", "[minute_field]") {
+TEST_CASE("minute_field with descending range is invalid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("30-10");
 	REQUIRE(!valid);
 }
 
-TEST_CASE("missing range", "[minute_field]") {
+TEST_CASE("minute_field with empty range is invalid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("-");
 	REQUIRE(!valid);
 }
 
-TEST_CASE("equal range", "[minute_field]") {
+TEST_CASE("minute_field with empty list is invalid", "[minute_field]") {
+	const minute_field minute;
+	bool valid = minute.validate(",");
+	REQUIRE(!valid);
+}
+
+TEST_CASE("minute_field with empty step is invalid", "[minute_field]") {
+	const minute_field minute;
+	bool valid = minute.validate("/");
+	REQUIRE(!valid);
+}
+
+TEST_CASE("minute_field with same range values is invalid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("0-0");
 	REQUIRE(!valid);

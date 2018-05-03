@@ -143,9 +143,10 @@
     <ClCompile Include="..\src\minute_field.cpp" />
     <ClCompile Include="..\src\month_field.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="test_cron_expression.cpp" />
-    <ClCompile Include="test_date_time.cpp" />
-    <ClCompile Include="test_minute_field.cpp" />
+    <ClCompile Include="cron_expression_tests.cpp" />
+    <ClCompile Include="date_time_tests.cpp" />
+    <ClCompile Include="hour_field_tests.cpp" />
+    <ClCompile Include="minute_field_tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="catch.hpp" />
