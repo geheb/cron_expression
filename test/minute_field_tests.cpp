@@ -73,25 +73,19 @@ TEST_CASE("minute_field with every 5 minutes step is valid", "[minute_field]") {
 	REQUIRE(valid);
 }
 
-TEST_CASE("minute_field with every 5 minutes range is valid", "[minute_field]") {
+TEST_CASE("minute_field with every 5 minutes range begining at 5 is valid", "[minute_field]") {
 	const minute_field minute;
-	bool valid = minute.validate("0/5");
+	bool valid = minute.validate("5/5");
 	REQUIRE(valid);
 }
 
-TEST_CASE("minute_field with every 5 minutes list is valid", "[minute_field]") {
-	const minute_field minute;
-	bool valid = minute.validate("0,5,10,15,20,25,30,35,40,45,50,55");
-	REQUIRE(valid);
-}
-
-TEST_CASE("minute_field with range and step is valid", "[minute_field]") {
+TEST_CASE("minute_field with range within list is valid", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("0-15,39,45");
 	REQUIRE(valid);
 }
 
-TEST_CASE("minute_field with multiple ranges is valid ", "[minute_field]") {
+TEST_CASE("minute_field with multiple ranges within list is valid ", "[minute_field]") {
 	const minute_field minute;
 	bool valid = minute.validate("0-15,30-45");
 	REQUIRE(valid);
@@ -129,7 +123,7 @@ TEST_CASE("minute_field with non numeric char is invalid", "[minute_field]") {
 
 TEST_CASE("minute_field with missing range start is invalid", "[minute_field]") {
 	const minute_field minute;
-	bool valid = minute.validate("-1");
+	bool valid = minute.validate("-59");
 	REQUIRE(!valid);
 }
 
@@ -141,13 +135,7 @@ TEST_CASE("minute_field with missing range end is invalid", "[minute_field]") {
 
 TEST_CASE("minute_field with duplicate list values is invalid", "[minute_field]") {
 	const minute_field minute;
-	bool valid = minute.validate("1,2,3,1");
-	REQUIRE(!valid);
-}
-
-TEST_CASE("minute_field with duplicate range and list values is invalid", "[minute_field]") {
-	const minute_field minute;
-	bool valid = minute.validate("1-15,10");
+	bool valid = minute.validate("1-5,1,2,3");
 	REQUIRE(!valid);
 }
 
@@ -177,7 +165,7 @@ TEST_CASE("minute_field with value and star range is invalid", "[minute_field]")
 
 TEST_CASE("minute_field with descending range is invalid", "[minute_field]") {
 	const minute_field minute;
-	bool valid = minute.validate("30-10");
+	bool valid = minute.validate("59-0");
 	REQUIRE(!valid);
 }
 

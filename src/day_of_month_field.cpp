@@ -6,9 +6,11 @@ namespace geheb {
 bool day_of_month_field::validate(const std::string &value) const {
 	if (value == "L" || value == "?") return true;
 	std::string weekday = parse_nearest_weekday(value);
-	// validate that a list don't have W or L
+	// validate that a list don't have W, L or ?
 	if (has_list(value) &&
-		(!weekday.empty() || value.find_first_of("L") != std::string::npos)) {
+		(!weekday.empty() || 
+			value.find_first_of("L") != std::string::npos ||
+			value.find_first_of("?") != std::string::npos)) {
 		return false;
 	}
 	return cron_field::validate(!weekday.empty() ? weekday : value);
