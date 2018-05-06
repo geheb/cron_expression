@@ -8,11 +8,11 @@ using namespace std::chrono;
 
 class cron_expression final {
 public:
-	cron_expression(const std::string &expression);
-	system_clock::time_point calc_next(const system_clock::time_point &timePoint);
+    cron_expression(const std::string &expression);
+    system_clock::time_point calc_next(const system_clock::time_point &timePoint);
 
 private:
-	std::string _values[5];
+    std::string _values[5];
 
 };
 
