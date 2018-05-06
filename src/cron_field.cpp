@@ -25,7 +25,7 @@ bool cron_field::validate(const std::string &value) const {
 	}
 	if (has_list(value)) { // e.g. 0,5 or 1,10-20
 		auto values = split_list(value);
-		for (auto &v : values) {
+		for (const std::string &v : values) {
 			if (v == "*" || !validate(v)) return false;
 		}
 		auto list = create_list(value);
@@ -36,7 +36,9 @@ bool cron_field::validate(const std::string &value) const {
 		if (ranges.size() != 2) return false;
 		if (ranges[0] == "*" || ranges[1] == "*") return false;
 		if (!validate(ranges[0]) || !validate(ranges[1])) return false;
-		return from_literal(ranges[0]) < from_literal(ranges[1]);
+		return _allowBackwardRange ? 
+			from_literal(ranges[0]) != from_literal(ranges[1]) :
+			from_literal(ranges[0]) < from_literal(ranges[1]);
 	}
 	int num = from_literal(value);
 	if (num < 0) return false;
@@ -69,8 +71,21 @@ std::vector<int> cron_field::create_list(const std::string &value) const {
 				}
 				step = std::stoi(values[1]);
 			}
-			for (int i = offset; i <= to; i += step) {
-				result.push_back(i);
+			if (_allowBackwardRange && offset > to)
+			{
+				// e.g. FRI - TUE 4 => 5,6,0,1,2
+				for (int i = offset; i <= range_end(); i += step) {
+					result.push_back(i);
+				}
+				for (int i = range_start(); i <= to; i += step) {
+					result.push_back(i);
+				}
+			}
+			else
+			{
+				for (int i = offset; i <= to; i += step) {
+					result.push_back(i);
+				}
 			}
 		}
 		else {

@@ -3,6 +3,7 @@
 namespace geheb {
 
 day_of_week_field::day_of_week_field() {
+	_allowBackwardRange = true;
 	_literals =	{
 		{ "SUN", 0 },
 		{ "MON", 1 },
@@ -15,6 +16,7 @@ day_of_week_field::day_of_week_field() {
 }
 
 bool day_of_week_field::validate(const std::string &value) const {
+	if (value == "?") return true;
 	std::string lastDayOfWeek = parse_last_day_of_week(value);
 	if (!lastDayOfWeek.empty()) {
 		return cron_field::validate(lastDayOfWeek);

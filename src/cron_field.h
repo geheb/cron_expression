@@ -16,6 +16,7 @@ enum cron_field_pos {
 
 class cron_field {
 public:
+	cron_field() : _allowBackwardRange(false) {}
 	virtual ~cron_field() {}
 	virtual int range_start() const = 0;
 	virtual int range_end() const = 0;
@@ -49,7 +50,7 @@ private:
 
 protected:
 	std::map<std::string, int> _literals;
-
+	bool _allowBackwardRange;
 	std::vector<int> create_list(const std::string &value) const;
 	int from_literal(const std::string &value) const;
 	std::vector<std::string> split(const std::string &value, char delimiter) const;

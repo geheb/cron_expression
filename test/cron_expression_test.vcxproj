@@ -143,6 +143,7 @@
     <ClCompile Include="..\src\minute_field.cpp" />
     <ClCompile Include="..\src\month_field.cpp" />
     <ClCompile Include="day_of_month_field_tests.cpp" />
+    <ClCompile Include="day_of_week_field_tests.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="cron_expression_tests.cpp" />
     <ClCompile Include="date_time_tests.cpp" />
