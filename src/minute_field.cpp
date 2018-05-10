@@ -3,6 +3,10 @@
 
 namespace geheb {
 
+minute_field::minute_field() {
+    _allowBackwardRange = true;
+}
+
 date_time minute_field::increment(const std::string &value, const date_time &time) const {
     date_time nextTime(time);
     if (value == "*") {

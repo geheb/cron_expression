@@ -32,7 +32,7 @@ cron_expression::cron_expression(const std::string &expression) {
     if (!day_of_week_field().validate(_values[cron_field_pos::day_of_week])) throw std::invalid_argument("invalid day of week field");
 }
 
-system_clock::time_point cron_expression::calc_next(const system_clock::time_point &timePoint) {
+system_clock::time_point cron_expression::calc_next(const system_clock::time_point &timePoint) const {
     date_time nextTime(timePoint);
     month_field month;
     day_of_month_field day;

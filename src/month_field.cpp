@@ -4,6 +4,7 @@
 namespace geheb {
 
 month_field::month_field() {
+    _allowBackwardRange = true;
     _literals = {
         { "JAN", 1 },
         { "FEB", 2 },

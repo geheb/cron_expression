@@ -8,22 +8,30 @@ namespace geheb {
 bool cron_field::validate(const std::string &value) const {
     if (value.empty()) return false;
     if (value == "*") return true;
-    if (has_step(value)) { // e.g. *\5 or 5/5 or 5-59/5
+    if (has_step(value)) { // e.g. */5 or 5/5 or 5-59/5
         auto values = split_step(value);
         if (values.size() != 2) return false;
         std::string range = values[0];
         if (!validate(range)) return false;
+        if (values[1] == "*" || has_list(values[1]) || has_range(values[1])) return false;
         int step = std::stoi(values[1]);
-        if (step == 0) return false;
+        if (step < 1) return false;
         if (range == "*") {
             range = std::to_string(range_start()) + _rangeChar + std::to_string(range_end());
         }
         auto ranges = split_range(range);
-        int start = from_literal(ranges[0]);
+        int start = from_literal(ranges[0]); 
         int end = ranges.size() > 1 ? from_literal(ranges[1]) : range_end();
-        return step <= end - start;
+        int length = end - start;
+        if (end < start)
+        {
+            length = (range_end() - start) + range_start() + end + 2;
+        }
+		return step <= length;
     }
     if (has_list(value)) { // e.g. 0,5 or 1,10-20
+        // check if begins or ends with comma
+        if (value[0] == _listChar || value[value.size() - 1] == _listChar) return false;
         auto values = split_list(value);
         for (const std::string &v : values) {
             if (v == "*" || !validate(v)) return false;
@@ -34,7 +42,10 @@ bool cron_field::validate(const std::string &value) const {
     if (has_range(value)) { // e.g. 0-5
         auto ranges = split_range(value);
         if (ranges.size() != 2) return false;
-        if (ranges[0] == "*" || ranges[1] == "*") return false;
+
+        if (std::find_if(ranges.begin(), ranges.end(),
+            [](const auto& s) { return s == "*" || s == "?"; }) != ranges.end()) return false;
+
         if (!validate(ranges[0]) || !validate(ranges[1])) return false;
         return _allowBackwardRange ? 
             from_literal(ranges[0]) != from_literal(ranges[1]) :
@@ -47,19 +58,15 @@ bool cron_field::validate(const std::string &value) const {
 
 std::vector<int> cron_field::create_list(const std::string &value) const {
     std::vector<int> result;
+
     for (const std::string &v : split_list(value)) {
-        bool hasRange = has_range(v);
-        if (hasRange || has_step(v)) {
+        bool hasStep = has_step(v);
+        if (hasStep || has_range(v)) {
             int offset, to, step;
-            if (hasRange) {
-                auto values = split_range(v);
-                offset = from_literal(values[0]);
-                to = from_literal(values[1]);
-                step = 1;
-            }
-            else {
+            if (hasStep) {
                 auto values = split_step(v); // *\5 or offset[-to]/step size
                 std::string range = values[0];
+                step = std::stoi(values[1]);
                 if (range == "*") {
                     offset = range_start();
                     to = range_end();
@@ -69,7 +76,12 @@ std::vector<int> cron_field::create_list(const std::string &value) const {
                     offset = from_literal(values[0]);
                     to = values.size() > 1 ? from_literal(values[1]) : range_end();
                 }
-                step = std::stoi(values[1]);
+            }
+            else {
+                auto values = split_range(v);
+                offset = from_literal(values[0]);
+                to = from_literal(values[1]);
+                step = 1;
             }
             if (_allowBackwardRange && offset > to)
             {
@@ -92,18 +104,7 @@ std::vector<int> cron_field::create_list(const std::string &value) const {
             result.push_back(from_literal(v));
         }
     }
-    if (result.size() > 1) {
-        if (result.size() < 3) {
-            if (result[0] > result[1]) {
-                int temp = result[0];
-                result[0] = result[1];
-                result[1] = temp;
-            }
-        }
-        else {
-            std::sort(result.begin(), result.end());
-        }
-    }
+
     return result;
 }
 

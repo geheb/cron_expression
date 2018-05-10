@@ -3,6 +3,10 @@
 
 namespace geheb {
 
+hour_field::hour_field() {
+    _allowBackwardRange = true;
+}
+
 date_time hour_field::increment(const std::string &value, const date_time &time) const {
     date_time nextTime(time);
     nextTime -= minutes(nextTime.minute()); // reset minutes to 0

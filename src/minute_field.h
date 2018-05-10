@@ -6,6 +6,7 @@ namespace geheb {
 
 class minute_field final : public cron_field {
 public:
+    minute_field();
     int range_start() const override { return 0; }
     int range_end() const override { return 59; }
     cron_field_pos pos() const override { return cron_field_pos::minute; }
