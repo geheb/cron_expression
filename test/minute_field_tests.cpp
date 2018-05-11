@@ -65,7 +65,7 @@ TEST_CASE("minute_field: pattern every 5 minutes is valid", "[minute_field]") {
     REQUIRE(minute.validate("*/5"));
     REQUIRE(minute.validate("0/5"));
     REQUIRE(minute.validate("0-59/5"));
-    REQUIRE(minute.validate("56-0/5"));
+    REQUIRE(minute.validate("55-0/5"));
     REQUIRE(minute.validate("0,5,10,15,20,25,30,35,40,45,50,55"));
 }
 
@@ -87,6 +87,7 @@ TEST_CASE("minute_field: list and range values are valid", "[minute_field]") {
     REQUIRE(minute.validate("0-15,30-45"));
     REQUIRE(minute.validate("3,2,1"));
     REQUIRE(minute.validate("55-5"));
+    REQUIRE(minute.validate("1-0/59"));
 }
 
 TEST_CASE("minute_field: out of range values are invalid", "[minute_field]") {
@@ -123,9 +124,11 @@ TEST_CASE("minute_field: step values are invalid", "[minute_field]") {
     REQUIRE(!minute.validate("0/0-59"));
     REQUIRE(!minute.validate("0-59/0"));
     REQUIRE(!minute.validate("0/60"));
+    REQUIRE(!minute.validate("0-59/60"));
     REQUIRE(!minute.validate("*/60"));
     REQUIRE(!minute.validate("1-1/1"));
     REQUIRE(!minute.validate("*/1/1"));
+    REQUIRE(!minute.validate("1-0/60"));
 }
 
 TEST_CASE("minute_field: list values are invalid", "[minute_field]") {

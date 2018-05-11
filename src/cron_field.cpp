@@ -25,7 +25,7 @@ bool cron_field::validate(const std::string &value) const {
         int length = end - start;
         if (end < start)
         {
-            length = (range_end() - start) + range_start() + end + 2;
+            length = (range_end() - start) + end + (range_start() < 1 ? 1 : 0);
         }
 		return step <= length;
     }

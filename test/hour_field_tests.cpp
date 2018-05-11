@@ -81,6 +81,8 @@ TEST_CASE("hour_field: list and range values are valid", "[hour_field]") {
     REQUIRE(hour.validate("0-6,7,8"));
     REQUIRE(hour.validate("0-3,6-9"));
     REQUIRE(hour.validate("3,2,1"));
+    REQUIRE(hour.validate("1-0/23"));
+    REQUIRE(hour.validate("23-22/23"));
 }
 
 TEST_CASE("hour_field: out of range values are invalid", "[hour_field]") {
@@ -117,9 +119,12 @@ TEST_CASE("hour_field: step values are invalid", "[hour_field]") {
     REQUIRE(!hour.validate("0/0-23"));
     REQUIRE(!hour.validate("0-23/0"));
     REQUIRE(!hour.validate("0/24"));
+    REQUIRE(!hour.validate("0-23/24"));
     REQUIRE(!hour.validate("*/24"));
     REQUIRE(!hour.validate("1-1/1"));
     REQUIRE(!hour.validate("*/1/1"));
+    REQUIRE(!hour.validate("1-0/24"));
+    REQUIRE(!hour.validate("23-22/24"));
 }
 
 TEST_CASE("hour_field: list values are invalid", "[hour_field]") {

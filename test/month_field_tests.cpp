@@ -102,6 +102,7 @@ TEST_CASE("month_field: list and range values are valid", "[month_field]") {
     REQUIRE(month.validate("1-3,6-9"));
     REQUIRE(month.validate("3,2,1"));
     REQUIRE(month.validate("DEC-MAR"));
+    REQUIRE(month.validate("2-1/11"));
 }
 
 TEST_CASE("month_field: out of range values are invalid", "[month_field]") {
@@ -146,6 +147,10 @@ TEST_CASE("month_field: step values are invalid", "[month_field]") {
     REQUIRE(!month.validate("*/13"));
     REQUIRE(!month.validate("1-1/1"));
     REQUIRE(!month.validate("*/1/1"));
+    REQUIRE(!month.validate("1-12/12"));
+    REQUIRE(!month.validate("12-1/3"));
+    REQUIRE(!month.validate("2-1/12")); 
+    REQUIRE(!month.validate("12-11/12"));
 }
 
 TEST_CASE("month_field: list values are invalid", "[month_field]") {

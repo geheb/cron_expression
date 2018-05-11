@@ -141,6 +141,7 @@ TEST_CASE("day_of_month_field: step values are invalid", "[day_of_month_field]")
     REQUIRE(!mday.validate("0/1-31"));
     REQUIRE(!mday.validate("1-31/0"));
     REQUIRE(!mday.validate("0/31"));
+    REQUIRE(!mday.validate("0-31/31"));
     REQUIRE(!mday.validate("*/31"));
     REQUIRE(!mday.validate("1-1/1"));
     REQUIRE(!mday.validate("*/1/1"));

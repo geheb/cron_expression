@@ -123,6 +123,7 @@ TEST_CASE("day_of_week_field: list and range values are valid", "[day_of_week_fi
     REQUIRE(wday.validate("3,2,1"));
     REQUIRE(wday.validate("0-6"));
     REQUIRE(wday.validate("6-0"));
+    REQUIRE(wday.validate("1-0/6"));
 }
 
 TEST_CASE("day_of_week_field: special char is valid", "[day_of_week_field]") {
@@ -169,9 +170,11 @@ TEST_CASE("day_of_week_field: step values are invalid", "[day_of_week_field]") {
     REQUIRE(!wday.validate("0/0-6"));
     REQUIRE(!wday.validate("0-6/0"));
     REQUIRE(!wday.validate("0/7"));
+    REQUIRE(!wday.validate("0-6/7"));
     REQUIRE(!wday.validate("*/7"));
     REQUIRE(!wday.validate("1-1/1"));
     REQUIRE(!wday.validate("*/1/1"));
+    REQUIRE(!wday.validate("1-0/7"));
 }
 
 TEST_CASE("day_of_week_field: list values are invalid", "[day_of_week_field]") {
