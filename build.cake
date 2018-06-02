@@ -23,16 +23,6 @@ Task("build-x86")
 		.SetVerbosity(Verbosity.Minimal));
 });
 
-Task("test-x86")
-	.Does(() =>
-{
-	int exitCode = StartProcess(buildDir + Directory("test/Win32") + testFile);
-	if (exitCode != 0) 
-	{
-		throw new Exception();
-	}
-});
-
 Task("build-x64")
 	.Does(() =>
 {
@@ -41,6 +31,24 @@ Task("build-x64")
 		.SetPlatformTarget(PlatformTarget.x64)
 		.WithTarget("Rebuild")
 		.SetVerbosity(Verbosity.Minimal));
+});
+
+Task("build")
+	.IsDependentOn("clean")
+	.IsDependentOn("build-x86")
+	.IsDependentOn("build-x64")
+	.Does(() =>
+{
+});
+
+Task("test-x86")
+	.Does(() =>
+{
+	int exitCode = StartProcess(buildDir + Directory("test/Win32") + testFile);
+	if (exitCode != 0) 
+	{
+		throw new Exception();
+	}
 });
 
 Task("test-x64")
@@ -53,6 +61,13 @@ Task("test-x64")
 	}
 });
 
+Task("test")
+	.IsDependentOn("test-x86")
+	.IsDependentOn("test-x64")
+	.Does(() =>
+{
+});
+
 Task("merge")
 	.Does(() =>
 {
@@ -60,11 +75,8 @@ Task("merge")
 });
 
 Task("Default")
-    .IsDependentOn("clean")
-    .IsDependentOn("build-x86")
-	.IsDependentOn("build-x64")
-    .IsDependentOn("test-x86")
-	.IsDependentOn("test-x64")
+    .IsDependentOn("build")
+    .IsDependentOn("test")
     .IsDependentOn("merge")
 	.Does(()=> 
 { 
