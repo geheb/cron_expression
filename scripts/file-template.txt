@@ -1,0 +1,15 @@
+/*
+ * cron_expression v{version}
+ * Generated: {timestamp}
+ * ------------------------------------------------------------------------------
+ * This file has been merged from multiple headers. Please don't edit it directly
+ * Copyright (c) {timestamp:year} Geheb. All rights reserved.
+ * 
+ * Distributed under the MIT License.
+ */
+#ifndef GEHEB_SINGLE_INCLUDE_CRON_EXPRESSION_HPP_INCLUDED
+#define GEHEB_SINGLE_INCLUDE_CRON_EXPRESSION_HPP_INCLUDED
+
+{content}
+
+#endif // GEHEB_SINGLE_INCLUDE_CRON_EXPRESSION_HPP_INCLUDED
