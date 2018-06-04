@@ -35,10 +35,17 @@ Task("build-x64")
 		.SetVerbosity(Verbosity.Minimal));
 });
 
+Task("merge")
+	.Does(() =>
+{
+	MergeSourceFilesToSingleHeaderFile(srcDir, buildDir);
+});
+
 Task("build")
 	.IsDependentOn("clean")
 	.IsDependentOn("build-x86")
 	.IsDependentOn("build-x64")
+	.IsDependentOn("merge")
 	.Does(() =>
 {
 });
@@ -89,12 +96,6 @@ Task("test")
 	.IsDependentOn("test-x64")
 	.Does(() =>
 {
-});
-
-Task("merge")
-	.Does(() =>
-{
-	MergeSourceFilesToSingleHeaderFile(srcDir, buildDir);
 });
 
 Task("Default")
