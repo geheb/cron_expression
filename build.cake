@@ -5,7 +5,6 @@ var configuration = Argument("configuration", "Release");
 var solutionFile = File("./build.sln");
 var buildDir = Directory("./build");
 var srcDir = Directory("./src");
-var testFile = File(configuration + "/cron_expression_test.exe");
 var testFileReporterArgs = "-r junit -s -o ";
 var hasXmlReport = Argument<bool>("xmlreport", false);
 
@@ -47,7 +46,7 @@ Task("build")
 Task("test-x86")
 	.Does(() =>
 {
-	var file = buildDir + Directory("test/Win32") + testFile;
+	var file = buildDir + Directory("test/Win32") + File(configuration + "/cron_expression_test.exe");
 	int exitCode;
 	if (!hasXmlReport)
 	{
@@ -68,7 +67,7 @@ Task("test-x64")
 	.Does(() =>
 {
 	if (!Context.Environment.Platform.Is64Bit) return;
-	var file = buildDir + Directory("test/x64") + testFile;
+	var file = buildDir + Directory("test/x64") + File(configuration + "/cron_expression_test-x64.exe");
 	int exitCode;
 	if (!hasXmlReport)
 	{
