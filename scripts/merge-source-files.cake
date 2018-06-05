@@ -27,7 +27,7 @@ public void MergeSourceFilesToSingleHeaderFile(string srcDir, string distDir)
 		}
 	}
 
-	var version = System.IO.File.ReadAllText("VERSION");
+	var version = System.Environment.GetEnvironmentVariable("APPVEYOR_BUILD_VERSION") ?? "1.0.0";
 	var template = System.IO.File.ReadAllText(System.IO.Path.Combine("scripts", "file-template.txt"));
 	var outputFile = System.IO.Path.Combine(distDir, "cron_expression.hpp");
 
