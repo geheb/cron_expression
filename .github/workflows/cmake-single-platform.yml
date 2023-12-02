@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -19,12 +19,12 @@ jobs:
       id: vcpkg
       with:
         pkgs: catch2
-        triplet: x64-linux-release
+        triplet: x64-windows-release
         token: ${{ github.token }}
 
     - run: |
         echo "VCPKG_ROOT=${{ github.workspace }}/vcpkg" >> $GITHUB_ENV
-        echo "VCPKG_DEFAULT_TRIPLET=x64-linux-release" >> $GITHUB_ENV
+        echo "VCPKG_DEFAULT_TRIPLET=x64-windows-release" >> $GITHUB_ENV
 
     - name: Configure CMake
       run: cmake -B ${{github.workspace}}/build
