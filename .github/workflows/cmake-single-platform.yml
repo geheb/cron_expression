@@ -36,9 +36,11 @@ jobs:
       shell: pwsh
       run: ./.github/scripts/merge-source-files.ps1 -Version ${{ github.ref_name }} -SourceDir ./ -TargetDir ./dist
 
-    - run: cd dist ; zip -r ../release.zip *
+    - name: Zip dist
+      shell: pwsh
+      run: Compress-Archive -Path dist/* -Destination ./release.zip
 
     - name: Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: gh release create ${{ github.ref_name }} release.zip --generate-notes --title "${{ github.ref_name }}"
+      run: gh release create ${{ github.ref_name }} ./release.zip --generate-notes --title "${{ github.ref_name }}"
