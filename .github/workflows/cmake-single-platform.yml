@@ -14,13 +14,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install vcpkg
-      uses: johnwason/vcpkg-action@v5
-      id: vcpkg
-      with:
-        pkgs: catch2
-        triplet: x64-windows-release
-        token: ${{ github.token }}
+    - name: Install Vcpkg
+      run: |
+        git clone https://github.com/Microsoft/vcpkg.git
+        cd vcpkg
+        ./bootstrap-vcpkg.bat
+        ./vcpkg integrate install
+        ./vcpkg install catch2 --triplet x64-windows
 
     - name: Configure CMake
       run: cmake -B ${{github.workspace}}/build -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
