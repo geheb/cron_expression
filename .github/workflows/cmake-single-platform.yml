@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: vcpkg build
+    - name: Install vcpkg
       uses: johnwason/vcpkg-action@v5
       id: vcpkg
       with:
@@ -23,7 +23,7 @@ jobs:
         token: ${{ github.token }}
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build
