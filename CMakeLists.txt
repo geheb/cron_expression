@@ -8,8 +8,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_library(cron_expression "cron_expression.cpp" "cron_expression.h" "cron_field.cpp" "cron_field.h" "date_time.cpp" "date_time.h" "day_of_month_field.cpp" "day_of_month_field.h" "day_of_week_field.cpp" "day_of_week_field.h" "hour_field.cpp" "hour_field.h" "minute_field.cpp" "minute_field.h" "month_field.cpp" "month_field.h")
 
-include($ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
-
 find_package(Catch2 3 REQUIRED)
 
 add_executable(cron_expression_tests cron_expression_tests.cpp)

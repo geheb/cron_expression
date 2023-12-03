@@ -22,12 +22,8 @@ jobs:
         triplet: x64-windows-release
         token: ${{ github.token }}
 
-    - run: |
-        echo "VCPKG_ROOT=${{ github.workspace }}/vcpkg" | Out-File -FilePath $env:GITHUB_ENV -Append
-        echo "VCPKG_DEFAULT_TRIPLET=x64-windows-release" | Out-File -FilePath $env:GITHUB_ENV -Append
-
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build
